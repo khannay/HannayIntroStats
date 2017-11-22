@@ -3,13 +3,13 @@ title: "Introduction to Clustering"
 author: "Dr. Kevin Hannay"
 date: "November 16, 2017"
 output:
+  pdf_document:
+    toc: yes
   prettydoc::html_pretty:
     fig_caption: yes
     highlight: github
     number_sections: yes
     theme: architect
-    toc: yes
-  pdf_document:
     toc: yes
 vignette: |
   %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
