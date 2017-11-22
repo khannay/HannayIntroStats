@@ -1,0 +1,182 @@
+---
+title: "Introduction to Clustering"
+author: "Dr. Kevin Hannay"
+date: "November 16, 2017"
+output:
+  prettydoc::html_pretty:
+    fig_caption: yes
+    highlight: github
+    number_sections: yes
+    theme: architect
+    toc: yes
+  pdf_document:
+    toc: yes
+vignette: |
+  %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width = 6)
+knitr::opts_chunk$set(fig.height = 6)
+```
+
+# What is Clustering?
+Clustering properly belongs in a class on Machine Learning. However, it is so useful we will cover just the basics in this class. The idea behind clustering is to look for groups or **clusters** of related data points in our data set. For example, we might have a data set which gives the purchase history of customers. From this data we might want to extract classes of customers.
+
+Here is what we need to get started:
+```{r}
+library(maps)
+library(cluster)
+library(HannayIntroStats)
+```
+you may need to install these packages before you can load them. The HannayAppliedStats Package is available on S1. 
+
+# Introduction to Kmeans clustering
+We will be using the kmeans clustering algorithm. The kmeans algorithm is pretty intuitive in nature. For example, lets suppose we have collected a data set with two variables and wish to create two clusters. We could plot the data points using those two variables:
+```{r, echo=FALSE}
+mysd=0.25
+x1<-rnorm(100, 1, sd=mysd)
+y1<-rnorm(100, 1, sd=mysd)
+x2<-rnorm(100,0, sd=mysd)
+y2<-rnorm(100,0,sd=mysd)
+x<-c(x1,x2)
+y<-c(y1,y2)
+practice_cluster=data.frame(x=x, y=y)
+plot(practice_cluster$x, practice_cluster$y, main='K means Clustering Ideas')
+```
+
+We can see two clusters in this data set. One is centered around (0,0) and the other is centered around (1,1). We can then draw a circles with a radius large enough to contain those points which are close to those centers. This is the main idea behind the k means clustering algorithm. However instead of us trying to eyeball where the center of the circles are we let the algorithm do the work for us. The k means algorithm has to be told how many clusters we are looking for, it then proceeds to minimize the sum of distances of points in a cluster to those centers. 
+
+```{r}
+cluster_obj<-kmeans(practice_cluster, centers=2, nstart=25)
+clusplot(practice_cluster, cluster_obj$cluster)
+```
+
+This makes a two-dimensional plot of our data and which cluster each data point is assigned to. We can see that is this case the kmeans algorithm does a pretty good job of finding the two clusters in the data. 
+
+
+## Crime Clusters by State
+We are now going to look for clusters in a real data set. Lets load in a crime data set, which gives murder, assault and rape statistics for all 50 states in 1973. We are going to see if we can cluster these into groups of high and low crime states. 
+```{r}
+data("crime_cluster")
+```
+Looking at the help page for this data we can see that we are given the number of arrests in each category per 100,000 residents. 
+```{r echo=FALSE, results='asis'}
+knitr::kable(head(crime_cluster))
+```
+
+You can see that there are many more assault arrests per 100,000 residents than the other two categories. This can cause some issues with our clustering. Therefore, it is generally a good idea to **standardize** your variables. Recall, this means we just transform them so that each column has a mean of zero and a standard deviation of one. The `scale` command in `R` does this for use easily. For example,
+```{r}
+crime_cluster<-data.frame(scale(crime_cluster))
+```
+
+Now when we look at the data:
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(crime_cluster))
+```
+
+we can see that Alabama is about one standard deviation above the national average in the murder and assault rate and about average in the rape category. 
+
+
+We can make a map of our crime clusters of states in `R`, using a function I wrote called StatePlot. 
+
+```{r}
+cl2<-StatePlot(2, crime_cluster)
+```
+
+Notice this prints out the cluster centers. It looks like it has found two main groups (high crime) and low crime. The high crime cluster are all about one standard deviation above the mean in each of the three categories. The low crime cluster is centered around being 0.6 standard deviations below the national average in all categories. 
+
+We can also make a two-dimensional plot of our clusters using the `clusplot` command (in the cluster package). Since we have three variables this two-dimensional plot is a projection (shadow). `R` automatically chooses the best way to project the data onto two dimensions. 
+
+```{r, fig.height=10, fig.width=10}
+clusplot(crime_cluster,cl2$cluster, labels=3, color=TRUE)
+```
+
+Looking at this plot lets us see which states are barely in the high or low crime clusters (and which are NOT!). For example, it looks like Missouri just barely makes the list of high crime states according to our analysis. 
+
+
+# How many clusters should we choose?
+
+A difficult question to answer when we are conducting a cluster analysis on data is: How many clusters should I pick to get the best representation of my data? Sometimes, we know that we are looking for some number of groups. For example, cancer genes and not cancer genes, or terrorist versus non-terrorist, etc. However, in many other cases it is not obvious how many clusters should be in our data. For example, how many customer types are shopping on your website, how many types of learners are in the classroom, etc. Part of the beauty of cluster analysis is that we let the data guide us to how many clusters to pick. 
+
+To begin lets look at the crime data, and see what happens if we divide states into three groups. Here is a map if we cluster the states into three groups:
+
+```{r}
+cl3<-StatePlot(3, crime_cluster)
+```
+
+We can see that the new cluster mostly split the low crime states into very low and sort of low. Here is a look at the clusters if we split the data into four clusters. 
+```{r}
+cl4<-StatePlot(4, crime_cluster)
+```
+
+In general, if we split the data into more clusters we can expect the data points to lie closer to the centers of the clusters. We can measure this by looking at the sum of all distances between the data points and the center of their clusters. The `kmeans` function reports this value to use:
+```{r}
+cl2$tot.withinss
+cl3$tot.withinss
+cl4$tot.withinss
+```
+
+This will decrease as we increase the number of clusters. If we allowed for 50 clusters we would just get one cluster for each state in our data set (giving a withinss value of zero)-- although this wouldn't really tell us any useful information. Lets make a plot of the `tot.withinss` or distortion measurements against the total number of clusters. 
+
+```{r}
+ElbowClusterPlot(crime_cluster) #This is a special function written by me in the package HannayAppliedStats
+```
+
+One common criteria for choosing the number of clusters to use is to look for the "elbow" for this plot. The elbow gives the smallest number of clusters which yields a big decrease in the total distance from the centers of the clusters. For the crime clusters the elbow occurs for $2$ clusters, as adding in a third cluster doesn't really reduce the total error (distortion) by much. 
+
+## Using Clusters
+Now that we have the clusters of states we could look use hypothesis testing to evaluate if we have sufficient evidence to conclude the high crime states cluster have a higher murder rate. 
+
+```{r}
+data("crime_cluster") #reload the data (not scaled anymore)
+t.test(crime_cluster$Murder~cl2$cluster, alternative='less')
+```
+
+
+##Exercises
+
+1. You can run the same clustering analysis using the bad_drivers data set to look for clusters of states which have similar driving characteristics. If you load this data set from my package you can even make a State plot of the clusters. 
+
+
+
+# Clustering NBA Players
+
+As another interesting application of clustering lets consider clustering the top 100 NBA players by per game statistics. The below code forms two clusters among the top 100 players, using a built in data set:
+
+```{r}
+data("nba_pg_2016") #load the nba data
+nba_clusters=kmeans(nba_pg_2016, centers=2, nstart=25)
+nba_clusters$centers
+row.names(subset(nba_pg_2016, nba_clusters$cluster==1))
+row.names(subset(nba_pg_2016, nba_clusters$cluster==2))
+```
+
+Knowing something about the NBA it looks like the clustering algorithm has found the a cluster of the "star" players. We could also view this as high usage players versus low usage players. The star cluster gets more shot attempts, free throws, etc then the other cluster. Here is a two dimensional plot of the two cluster solution. 
+
+```{r}
+clusplot(nba_pg_2016, nba_clusters$cluster)
+```
+
+Lets see what happens if we break into three clusters:
+
+```{r}
+nba_clusters=kmeans(nba_pg_2016, centers=3, nstart=25)
+nba_clusters$centers
+row.names(subset(nba_pg_2016, nba_clusters$cluster==1))
+row.names(subset(nba_pg_2016, nba_clusters$cluster==2))
+row.names(subset(nba_pg_2016, nba_clusters$cluster==3))
+```
+
+Looks like the "high usage" or stars split into two clusters (mid level stars and superstars) when we allow for three clusters. Conducting an elbow plot analysis shows that two or three clusters is probably the best choice in this case. 
+
+```{r}
+ElbowClusterPlot(nba_pg_2016, scale = FALSE)
+```
+
+
+
+
+
