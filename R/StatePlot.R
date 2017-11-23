@@ -20,6 +20,10 @@
 
 StatePlot <- function(numClusters=2, mydf, drops=NULL, scale=TRUE) {
 
+  if (!requireNamespace("maps", quietly = TRUE)) {
+    stop("Maps package is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
   mydf$cluster<-NULL
   mydf<-mydf[ , !(names(mydf) %in% drops)]
 
@@ -32,14 +36,14 @@ StatePlot <- function(numClusters=2, mydf, drops=NULL, scale=TRUE) {
   mydf$cluster<-cl_obj$cluster
 
   #Get the map names for the states
-  namevec <- map(database = "state", col = "blue",fill=T, namesonly=TRUE, plot = FALSE);
+  namevec <- maps::map(database = "state", col = "blue",fill=T, namesonly=TRUE, plot = FALSE);
   row.names(mydf)<-tolower(row.names(mydf))
   namevec2<-gsub(":.*", "", namevec) #remove the colons from the names
   mycolors<-mydf[namevec2,]$cluster
 
   #Make the actual map
   color.list=c("darkgreen", "yellow", "red", "blue", "cyan", "lightblue", "coral")
-  map(database = "state",col =color.list[mycolors],fill=TRUE)
+  maps::map(database = "state",col =color.list[mycolors],fill=TRUE)
   report_clusters<-data.frame(cl_obj$centers)
   report_clusters$colors<-color.list[1:numClusters]
   print(report_clusters)
