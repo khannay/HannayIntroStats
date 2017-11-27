@@ -9,6 +9,7 @@
 #' @examples
 #' data("AmesHousing_Regression")
 #' lm.res<-lm(SalePrice.log10~Square.Feet.log10, data=AmesHousing_Regression)
+#' summary(lm.res)
 #' diagRegressionPlots(lm.res)
 #' @export
 
