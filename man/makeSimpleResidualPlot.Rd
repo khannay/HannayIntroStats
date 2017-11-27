@@ -27,3 +27,6 @@ NULL (nothings returned)
 This function makes a simple plot of the residuals as arrows versus a statistical model of the form y=alpha+beta*x. Will print the least
 squares cost of the model.
 }
+\examples{
+None
+}
