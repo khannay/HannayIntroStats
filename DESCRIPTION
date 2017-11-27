@@ -1,9 +1,9 @@
 Package: HannayIntroStats
 Title: Introductory Statistics Package for MATH 2330 at Schreiner University
-Version: 0.0.0.9000
+Version: 1.0
 Authors@R: person("Kevin", "Hannay", email = "khannay@schreiner.edu", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.4.2)
+Description: Provides data sets and shortcut R functions used in MATH 2330 at Schreiner University. 
+Depends: R (>= 3.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
