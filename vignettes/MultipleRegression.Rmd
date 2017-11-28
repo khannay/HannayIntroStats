@@ -1,0 +1,28 @@
+---
+title: "Multiple Regression"
+author: "Dr. Hannay"
+date: "November 28, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Multiple Regression
+Looking at the colors in the above plot corresponding to different neighborhoods we can see that we might get a better model if we built a linear model for each neighborhood individually. If we include more than one explanatory variable this is called *multiple regression*. In general it is a bad idea to include too many explanatory variables, but in this case we are justified in including neighborhood information as the plot shows the neighborhoods behaving very differently. 
+
+To allow for nieghborhood effects in our model we simply add this value to the model. 
+```{r}
+res.house.neigh<-lm(SalePrice.log10~Square.Feet.log10+Neighborhood, data=house)
+summary(res.house.neigh)
+```
+
+The results here show that some neighborhoods have inherently more expensive houses. The coefficients for each neighborhood are added to the y-intercept value of 3.08. For example, the houses in the StoneBr neighborhood are best modeled by $$ \log_{10}(Price)=3.08+0.31+0.63 \log_{10} (sqft)=3.39+ 0.63 \log_{10}(sqft).$$
+
+
+```{r}
+house.StoneBr<-subset(house, house$Neighborhood=='StoneBr')
+res.stonebr<-lm(SalePrice.log10~Square.Feet.log10, data=house.StoneBr)
+summary(res.stonebr)
+```
