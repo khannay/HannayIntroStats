@@ -25,4 +25,5 @@ diagRegressionPlots <- function(regression.obj, x, y) {
   title=paste(c('Model Fit to the Data R Square=', round(summary(regression.obj)$r.squared,2)), collapse=" ")
   plot(x,y, main=title)
   abline(regression.obj, col='red')
+  par(mfrow=c(1,1))
 }
