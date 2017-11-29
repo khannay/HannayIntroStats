@@ -1,7 +1,7 @@
 
 #' Regression Diagnostics
 #'
-#' Makes a few lots which may be useful in determining whether linear regression is working for a data set.
+#' Makes a few plots which may be useful in determining whether linear regression is working for a data set.
 #'
 #' @param regression.obj no default, is a the output from an lm command in R
 #' @param x, no default gives the x values used in the regression used to make a data plot
@@ -19,7 +19,7 @@ diagRegressionPlots <- function(regression.obj, x, y) {
   par(mfrow=c(2,2))
   qqnorm(as.vector(regression.obj$residuals), main="Normality check for Residuals QQ Plot")
   qqline(as.vector(regression.obj$residuals), col='red')
-  plot(regression.obj$residuals, main='Equal Variance Check for Residuals')
+  plot(x,regression.obj$residuals, main='Equal Variance Check for Residuals', ylab='Residuals', xlab='x')
   hist(regression.obj$residuals, main='Histogram for the Residuals', xlab='Residual Value', col='lightblue')
   #plot the regression
   title=paste(c('Model Fit to the Data R Square=', round(summary(regression.obj)$r.squared,2)), collapse=" ")

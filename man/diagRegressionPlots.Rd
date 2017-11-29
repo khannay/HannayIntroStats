@@ -14,7 +14,7 @@ diagRegressionPlots(regression.obj, x, y)
 \item{y, }{no default gives the y values used in the regression used to make a data plot}
 }
 \description{
-Makes a few lots which may be useful in determining whether linear regression is working for a data set.
+Makes a few plots which may be useful in determining whether linear regression is working for a data set.
 }
 \examples{
 data("AmesHousing_Regression")
