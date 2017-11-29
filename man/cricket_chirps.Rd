@@ -5,7 +5,7 @@
 Cricket Chirps versus Temperature
 }
 \description{
-This data set provides a good example of simple linear regression between two variables.
+This data set provides a good example of simple linear regression between two variables. The striped ground cricket chirps more quickly for higher temperatures.
 }
 \usage{data("cricket_chirps")}
 \format{
@@ -26,6 +26,6 @@ The Song of Insects by Dr.G.W. Pierce, Harvard College Press
 }
 \examples{
 data(cricket_chirps)
-## maybe str(cricket_chirps) ; plot(cricket_chirps) ...
+plot(cricket_chirps$temp.fahrenheit, cricket_chirps$chirps.sec)
 }
 \keyword{datasets}
