@@ -4,12 +4,14 @@
 \alias{grabNumeric}
 \title{Grab Numeric}
 \usage{
-grabNumeric(mydf, drop = NULL)
+grabNumeric(mydf, drop = NULL, drop.na.values = TRUE)
 }
 \arguments{
 \item{mydf}{this is the data frame to strip of non numerical columns}
 
 \item{drop}{defaults to NULL (none) use this if you want to drop one of more columns by name. Non numerical columns will be dropped automatically}
+
+\item{drop.na.values}{defaults to TRUE, this will drop any rows which contain missing values. This is done AFTER removing the drop columns AND dropping non numerical columns}
 }
 \value{
 a data frame with all numerical columns
