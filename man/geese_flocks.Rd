@@ -13,9 +13,9 @@ Pink-footed goose abatement using scaring tactics in Norway.
   \describe{
     \item{\code{flock.size}}{a numeric vector giving the estimated flock size on that day. Taken either in the morning or evening}
     \item{\code{flock.prev.day.size}}{a numeric vector giving the size of the flock the previous day}
-    \item{\code{geese.binary}}{a numeric vector, 1 or 0 for wether any geese were present}
-    \item{\code{geese.prev.day.binary}}{a numeric ector 1 or 0 whether geese where seen there the day before}
-    \item{\code{scare.dose}}{a numeric vector, giving the number of times the geese were scared away that day}
+    \item{\code{geese.binary}}{a numeric vector, 1 if any geese were present and 0 if no geese were observed. }
+    \item{\code{geese.prev.day.binary}}{a numeric vector 1 or 0 whether geese where seen there the day before}
+    \item{\code{scare.dose}}{a numeric vector, giving the number of times the geese were scared away that day. }
   }
 }
 \details{
