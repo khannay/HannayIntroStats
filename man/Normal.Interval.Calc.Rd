@@ -11,9 +11,9 @@ Normal.Interval.Calc(a, b, mean = 0, sd = 1)
 
 \item{b}{no default, gives the right side of the interval}
 
-\item{mean, }{defaults to zero, gives the mean of the normal distribution}
+\item{mean}{defaults to zero, gives the mean of the normal distribution}
 
-\item{sd, }{defaults to one, gives the standard deviation of the normal distribution}
+\item{sd}{defaults to one, gives the standard deviation of the normal distribution}
 }
 \value{
 the probability of a normal random variate with the given mean and sd lying in the given interval
