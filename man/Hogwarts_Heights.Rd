@@ -5,7 +5,7 @@
 Hogwarts Heights Data Set
 }
 \description{
-A fake data set of the heights of magical creatures at Hogwarts Magical School.
+A fake data set of the heights of magical creatures and students at Hogwarts Magical School.
 }
 \usage{data("Hogwarts_Heights")}
 \format{
