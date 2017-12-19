@@ -1,5 +1,5 @@
-\name{bad_drivers}
-\alias{bad_drivers}
+\name{bad_drivers_cluster}
+\alias{bad_drivers_cluster}
 \docType{data}
 \title{
 Which State Has The Worst Drivers?
@@ -30,7 +30,7 @@ National Highway Traffic Safety Administration 2012, National Highway Traffic Sa
 http://fivethirtyeight.com/datalab/which-state-has-the-worst-drivers/
 }
 \examples{
-data(bad_drivers)
-StatePlot(2, bad_drivers) #make a plot of the clusters of the two drivers
+data(bad_drivers_cluster)
+StatePlot(2, bad_drivers_cluster) #make a plot of the clusters of the two drivers
 }
 \keyword{datasets}
