@@ -1,7 +1,7 @@
-#' Function used to run interactive apps included in the HannayIntroStats Package
+#' Run an App
 #'
-#' This function is useful to visualize clusters of states. It uses the kmeans function to form clusters of the states and then provides a visualization
-#' of the data. State names should be saved as the row.names of the passed in data frame. Depends on the map function from the maps package.
+#' This can be used to run the included apps in the HannayIntroStats package.
+#'
 #'
 #' @param example the name of the app you want to run in string format
 #' @return None
@@ -9,7 +9,7 @@
 #'  runExample('AssessingNormality')
 #' @export
 
-runExample <- function(example) {
+runHannayApp <- function(example) {
   # locate all the shiny app examples that exist
   validExamples <- list.files(system.file("shiny-examples", package = "HannayIntroStats"))
 
