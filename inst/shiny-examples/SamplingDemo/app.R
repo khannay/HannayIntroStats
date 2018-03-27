@@ -16,7 +16,7 @@ ui <- fluidPage(
    titlePanel("Sampling Distribution"),
 
    # Sidebar with a slider input for number of bins
-   sidebarLayout(
+   sidebarLayout(position = "right",
      sidebarPanel(
        sliderInput("size", "Sample size:", min=5, max=100, value=30, step=10),
 
@@ -38,13 +38,30 @@ ui <- fluidPage(
                     selected = 1),
 
 
-       actionButton("go", "Go")
+       actionButton("go", "Draw Sample")
      ),
 
       # Show a plot of the generated distribution
       mainPanel(
+        p("The population distribution for the Schreiner heights example is the distribution of the heights of every single student. This is almost always
+          unknown! However we can use statistics to make an inference about some characteristic of this distribution through random sampling. "),
+        p("You can change the Population distribution button to change the shape of the population distribution. Our estimates should not depedent directly on
+          the shape of the population distribution as this is almost always unknown!"),
         plotOutput("popdistPlot"),
-        plotOutput("samplingdistPlot")
+        p("The sample size slider varies the number of random students we ask about their heights before quitting and computing our estimate for the population
+          parameter. "),
+        p("The point estimate buttons allow you to change the population parameter we are trying to measure. The mean button means we are trying to estimate
+        the average height of Schreiner students through a sample, the median tries to estimate the median height of Schreiner students, ..., the IQR tries to estimate
+          the Inner Quartile Range of the height distribution using the sample. "),
+        p("Click the Draw Sample button to generate a random sample of N students. Notice each time you click this the estimate changes as the students randomly chosen
+          for the survey changes. To understand this random variable we plot its probability distribution (the sampling distribution)"),
+        plotOutput("samplingdistPlot"),
+        p("The black vertical line shows our best estimate for the point estimator (mean, median, var, etc) and the blue line shows the actual value (if we sampled the entire population). "),
+        p("Notice each time you hit the Draw Sample button the black line changes and the blue line is fixed. This is beacuse our sample is random and
+          the population value is fixed. "),
+        p(h3("Estimator Statistics:")),
+        textOutput("point_estimate"),
+        textOutput("sd_error")
       )
    )
 )
@@ -52,7 +69,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-  pop.data <- eventReactive(input$go,
+  pop.data <- eventReactive(input$distType,
                         {
                           if (input$distType==1) {
                             return(rnorm(10000))
@@ -74,6 +91,30 @@ server <- function(input, output) {
   )
 
 
+  estimate.data<- eventReactive(input$go,
+                                {
+                                  my.pop.data=sample(pop.data(), size=input$size)
+                                  sample.size=1000;
+                                  if (input$pestim==1) {
+                                    return(replicate(sample.size, mean(sample(my.pop.data, size=input$size, replace=TRUE))))
+                                  }
+                                  if (input$pestim==2) {
+                                    return(replicate(sample.size, median(sample(my.pop.data, size=input$size, replace=TRUE))))
+                                  }
+                                  if (input$pestim==3) {
+                                    return(replicate(sample.size, var(sample(my.pop.data, size=input$size, replace=TRUE))))
+                                  }
+                                  if (input$pestim==4) {
+                                    return(replicate(sample.size, sd(sample(my.pop.data, size=input$size, replace=TRUE))))
+                                  }
+                                  if (input$pestim==5) {
+                                    return(replicate(sample.size, IQR(sample(my.pop.data, size=input$size, replace=TRUE))))
+                                  }
+
+
+                                }
+)
+
   output$popdistPlot <- renderPlot({
     # Make a histogram of the data
     hist(pop.data(), col = 'lightblue', border = 'white', main='Population Distribution', xlab='Data Values', freq=FALSE);
@@ -85,78 +126,70 @@ server <- function(input, output) {
 
   output$samplingdistPlot <- renderPlot({
     # Make a histogram of the data
-    my.pop.data=sample(pop.data(), size=input$size)
-    if (input$pestim==1) {
-      estimate.data=replicate(10000, mean(sample(my.pop.data, size=input$size, replace=TRUE)))
-    }
-    if (input$pestim==2) {
-      estimate.data=replicate(10000, median(sample(my.pop.data, size=input$size, replace=TRUE)))
-    }
-    if (input$pestim==3) {
-      estimate.data=replicate(10000, var(sample(my.pop.data, size=input$size, replace=TRUE)))
-    }
-    if (input$pestim==4) {
-      estimate.data=replicate(10000, sd(sample(my.pop.data, size=input$size, replace=TRUE)))
-    }
-    if (input$pestim==5) {
-      estimate.data=replicate(10000, IQR(sample(my.pop.data, size=input$size, replace=TRUE)))
-    }
 
-    hist(estimate.data, col = 'coral', border = 'white', main='Sampling Distribution', xlab='Data Values', freq=FALSE);
-    dens <- density(estimate.data);
+    hist(estimate.data(), col = 'coral', border = 'white', main='Sampling Distribution', xlab='Data Values', freq=FALSE);
+    dens <- density(estimate.data());
     lines(dens, col='red');
 
     if (input$pestim==1) {
       line.place=mean(pop.data())
-      sample.place=mean(estimate.data)
+      sample.place=mean(estimate.data())
       abline(v=line.place, col='blue', lwd=3)
       abline(v=sample.place, col='black', lwd=3)
-      val1=quantile(estimate.data, 0.025)
-      val2=quantile(estimate.data, 0.975)
+      val1=quantile(estimate.data(), 0.025)
+      val2=quantile(estimate.data(), 0.975)
       abline(v=val1, col='red', lwd=3, lty=2)
       abline(v=val2, col='red', lwd=3, lty=2)
     }
     if (input$pestim==2) {
       line.place=median(pop.data())
-      sample.place=mean(estimate.data)
+      sample.place=mean(estimate.data())
       abline(v=line.place, col='blue', lwd=3)
       abline(v=sample.place, col='black', lwd=3)
-      val1=quantile(estimate.data, 0.025)
-      val2=quantile(estimate.data, 0.975)
+      val1=quantile(estimate.data(), 0.025)
+      val2=quantile(estimate.data(), 0.975)
       abline(v=val1, col='red', lwd=3, lty=2)
       abline(v=val2, col='red', lwd=3, lty=2)
     }
 
     if (input$pestim==3) {
       line.place=var(pop.data())
-      sample.place=mean(estimate.data)
+      sample.place=mean(estimate.data())
       abline(v=line.place, col='blue', lwd=3)
       abline(v=sample.place, col='black', lwd=3)
-      val1=quantile(estimate.data, 0.025)
-      val2=quantile(estimate.data, 0.975)
+      val1=quantile(estimate.data(), 0.025)
+      val2=quantile(estimate.data(), 0.975)
       abline(v=val1, col='red', lwd=3, lty=2)
       abline(v=val2, col='red', lwd=3, lty=2)
     }
     if (input$pestim==4) {
       line.place=sd(pop.data())
-      sample.place=mean(estimate.data)
+      sample.place=mean(estimate.data())
       abline(v=line.place, col='blue', lwd=3)
       abline(v=sample.place, col='black', lwd=3)
-      val1=quantile(estimate.data, 0.025)
-      val2=quantile(estimate.data, 0.975)
+      val1=quantile(estimate.data(), 0.025)
+      val2=quantile(estimate.data(), 0.975)
       abline(v=val1, col='red', lwd=3, lty=2)
       abline(v=val2, col='red', lwd=3, lty=2)
     }
     if (input$pestim==5) {
       line.place=IQR(pop.data())
-      sample.place=mean(estimate.data)
+      sample.place=mean(estimate.data())
       abline(v=line.place, col='blue', lwd=3)
       abline(v=sample.place, col='black', lwd=3)
-      val1=quantile(estimate.data, 0.025)
-      val2=quantile(estimate.data, 0.975)
+      val1=quantile(estimate.data(), 0.025)
+      val2=quantile(estimate.data(), 0.975)
       abline(v=val1, col='red', lwd=3, lty=2)
       abline(v=val2, col='red', lwd=3, lty=2)
     }
+  })
+
+  output$sd_error <- renderText({
+    paste("Standard Error: ", sd(estimate.data()))
+  })
+
+  output$point_estimate <- renderText({
+    paste("Point Estimate: ", mean(estimate.data()))
   })
 
 
