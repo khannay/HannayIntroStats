@@ -18,7 +18,7 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins
    sidebarLayout(
      sidebarPanel(
-       numericInput("size", "Sample size:", 50),
+       sliderInput("size", "Sample size:", min=5, max=100, value=30, step=10),
 
        radioButtons("distType",
                     "Population Distribution Type",
@@ -33,7 +33,8 @@ ui <- fluidPage(
                     choices = list("mean" = 1,
                                    "median" = 2,
                                    "variance" = 3,
-                                   "IQR"=4),
+                                   "sd"=4,
+                                   "IQR"=5),
                     selected = 1),
 
 
@@ -42,8 +43,8 @@ ui <- fluidPage(
 
       # Show a plot of the generated distribution
       mainPanel(
-        p("The Population Distribution"),
         plotOutput("popdistPlot"),
+        plotOutput("samplingdistPlot")
       )
    )
 )
@@ -72,12 +73,93 @@ server <- function(input, output) {
                         }
   )
 
+
   output$popdistPlot <- renderPlot({
     # Make a histogram of the data
-    hist(pop.data(), col = 'lightblue', border = 'white', main='Histogram of the Data', xlab='Data Values', freq=FALSE);
+    hist(pop.data(), col = 'lightblue', border = 'white', main='Population Distribution', xlab='Data Values', freq=FALSE);
     dens <- density(pop.data());
-    lines(dens, col='red');
+    lines(dens, col='blue');
+
+
   })
+
+  output$samplingdistPlot <- renderPlot({
+    # Make a histogram of the data
+    my.pop.data=sample(pop.data(), size=input$size)
+    if (input$pestim==1) {
+      estimate.data=replicate(10000, mean(sample(my.pop.data, size=input$size, replace=TRUE)))
+    }
+    if (input$pestim==2) {
+      estimate.data=replicate(10000, median(sample(my.pop.data, size=input$size, replace=TRUE)))
+    }
+    if (input$pestim==3) {
+      estimate.data=replicate(10000, var(sample(my.pop.data, size=input$size, replace=TRUE)))
+    }
+    if (input$pestim==4) {
+      estimate.data=replicate(10000, sd(sample(my.pop.data, size=input$size, replace=TRUE)))
+    }
+    if (input$pestim==5) {
+      estimate.data=replicate(10000, IQR(sample(my.pop.data, size=input$size, replace=TRUE)))
+    }
+
+    hist(estimate.data, col = 'coral', border = 'white', main='Sampling Distribution', xlab='Data Values', freq=FALSE);
+    dens <- density(estimate.data);
+    lines(dens, col='red');
+
+    if (input$pestim==1) {
+      line.place=mean(pop.data())
+      sample.place=mean(estimate.data)
+      abline(v=line.place, col='blue', lwd=3)
+      abline(v=sample.place, col='black', lwd=3)
+      val1=quantile(estimate.data, 0.025)
+      val2=quantile(estimate.data, 0.975)
+      abline(v=val1, col='red', lwd=3, lty=2)
+      abline(v=val2, col='red', lwd=3, lty=2)
+    }
+    if (input$pestim==2) {
+      line.place=median(pop.data())
+      sample.place=mean(estimate.data)
+      abline(v=line.place, col='blue', lwd=3)
+      abline(v=sample.place, col='black', lwd=3)
+      val1=quantile(estimate.data, 0.025)
+      val2=quantile(estimate.data, 0.975)
+      abline(v=val1, col='red', lwd=3, lty=2)
+      abline(v=val2, col='red', lwd=3, lty=2)
+    }
+
+    if (input$pestim==3) {
+      line.place=var(pop.data())
+      sample.place=mean(estimate.data)
+      abline(v=line.place, col='blue', lwd=3)
+      abline(v=sample.place, col='black', lwd=3)
+      val1=quantile(estimate.data, 0.025)
+      val2=quantile(estimate.data, 0.975)
+      abline(v=val1, col='red', lwd=3, lty=2)
+      abline(v=val2, col='red', lwd=3, lty=2)
+    }
+    if (input$pestim==4) {
+      line.place=sd(pop.data())
+      sample.place=mean(estimate.data)
+      abline(v=line.place, col='blue', lwd=3)
+      abline(v=sample.place, col='black', lwd=3)
+      val1=quantile(estimate.data, 0.025)
+      val2=quantile(estimate.data, 0.975)
+      abline(v=val1, col='red', lwd=3, lty=2)
+      abline(v=val2, col='red', lwd=3, lty=2)
+    }
+    if (input$pestim==5) {
+      line.place=IQR(pop.data())
+      sample.place=mean(estimate.data)
+      abline(v=line.place, col='blue', lwd=3)
+      abline(v=sample.place, col='black', lwd=3)
+      val1=quantile(estimate.data, 0.025)
+      val2=quantile(estimate.data, 0.975)
+      abline(v=val1, col='red', lwd=3, lty=2)
+      abline(v=val2, col='red', lwd=3, lty=2)
+    }
+  })
+
+
 
 
 }
