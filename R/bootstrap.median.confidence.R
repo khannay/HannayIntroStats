@@ -20,7 +20,6 @@ bootstrap.median.confidence <- function(mydata, conf.level=0.95, replicates=1000
   #bootstap to get a confidence interval for the median of this data set
   numdatapoints<-length(mydata)
   resampled.values<-replicate(replicates, median(sample(mydata, numdatapoints, replace=TRUE)) )
-  print(resampled.values)
   left.over=(1.0-conf.level)/2.0
   upper=1.0-left.over;
   lower=left.over
