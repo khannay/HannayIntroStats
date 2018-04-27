@@ -4,7 +4,8 @@
 \alias{bootstrap.sd.confidence}
 \title{Function to find a confidence interval for the standard deviation of a data set}
 \usage{
-bootstrap.sd.confidence(mydata, conf.level = 0.95, replicates = 10000)
+bootstrap.sd.confidence(mydata, conf.level = 0.95, replicates = 10000,
+  alternative = "two.sided", na.rm = TRUE)
 }
 \arguments{
 \item{mydata}{use this to pass in the data set (numeric vector) you wish to build the confidence interval for.}
@@ -12,12 +13,16 @@ bootstrap.sd.confidence(mydata, conf.level = 0.95, replicates = 10000)
 \item{conf.level}{defaults to 0.95 can change this to 0.99 etc to change the confidence level required. Must be a number between 0 and 1}
 
 \item{replicates}{defaults to 10,000 this is how many resamples to take of the data set. Can increase this to get more consistent confidence intervals.}
+
+\item{alternative}{defaults to two.sided, can also be set to 'less' or 'greater' to get sided confidence intervals. Can also use 'l' for 'less' and 'g' for 'greater'.}
+
+\item{na.rm}{defaults to true this is whether to remove missing values from the data set. Otherwise NA values will give an error.}
 }
 \value{
 a vector giving the lower and upper bound of the requested confidence interval
 }
 \description{
-This function is useful for finding the two sided confidence interval for the standard deviation of a data set, for which the t.test command cannot be used.
+This function is useful for finding the confidence interval for the standard deviation of a data set, for which the t.test command cannot be used.
 }
 \examples{
 data(hkhw) #load the Hong Kong Heights and Weights
