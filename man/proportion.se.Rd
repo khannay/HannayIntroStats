@@ -15,7 +15,8 @@ proportion.se(success, total)
 the estimated standard error for estimator
 }
 \description{
-This is a short-hand function to find the standard error for a population proportion calculation
+This is a short-hand function to find the standard error for a standard error of
+the population proportion calculation. se=sqrt(p*(1-p)/N)
 }
 \examples{
 proportion.se(10,25)
