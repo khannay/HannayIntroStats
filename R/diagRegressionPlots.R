@@ -1,29 +1,37 @@
 
 #' Regression Diagnostics
 #'
-#' Makes a few plots which may be useful in determining whether linear regression is working for a data set.
+#' Makes a few plots which may be useful in determining whether ordinary linear regression is working for a data set.
 #'
 #' @param regression.obj no default, is a the output from an lm command in R
-#' @param x, no default gives the x values used in the regression used to make a data plot
-#' @param y, no default gives the y values used in the regression used to make a data plot
+#' @param cex defaults to 1, controls the size of the points in the scatter plots decrease if you have a large number of points
 #' @examples
-#' data("AmesHousing_Regression")
-#' lm.res<-lm(SalePrice.log10~Square.Feet.log10, data=AmesHousing_Regression)
-#' summary(lm.res)
-#' diagRegressionPlots(lm.res)
+#' data("alligator")
+#' lm.alligator=lm(lnLength~lnWeight, data=alligator)
+#' summary(lm.alligator)
+#' diagRegressionPlots(lm.alligator)
 #' @export
 
 
 
-diagRegressionPlots <- function(regression.obj, x, y) {
+diagRegressionPlots <- function(regression.obj, cex=1)
+{
   par(mfrow=c(2,2))
-  qqnorm(as.vector(regression.obj$residuals), main="Normality check for Residuals QQ Plot")
+  #Grab the names of the two variables
+  var.names=attr(regression.obj$model, "names")
+
+  x=regression.obj$model[,2]
+  y=regression.obj$model[,1]
+
+
+  qqnorm(as.vector(regression.obj$residuals), main="Normality check QQ Plot", cex=cex)
   qqline(as.vector(regression.obj$residuals), col='red')
-  plot(x,regression.obj$residuals, main='Equal Variance Check for Residuals', ylab='Residuals', xlab='x')
+  plot(x,regression.obj$residuals, main='Residual Plot', ylab='Residuals', xlab=var.names[2], cex=cex)
   hist(regression.obj$residuals, main='Histogram for the Residuals', xlab='Residual Value', col='lightblue')
+
   #plot the regression
-  title=paste(c('Model Fit to the Data R Square=', round(summary(regression.obj)$r.squared,2)), collapse=" ")
-  plot(x,y, main=title)
+  title=paste(c('Model Fit R^2=', round(summary(regression.obj)$r.squared,2)), collapse=" ")
+  plot(x,y, main=title, xlab=var.names[1], ylab=var.names[2], cex=cex)
   abline(regression.obj, col='red')
   par(mfrow=c(1,1))
 }
