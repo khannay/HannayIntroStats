@@ -7,6 +7,8 @@ NBA Shot Selection for 2014-2015 Season
 \description{
 Data on shots taken during the 2014-2015 season, who took the shot, where on the floor was the shot taken from, who was the nearest defender, how far away was the nearest defender, time on the shot clock, and much more. The column titles are generally self-explanatory.
 
+Note this is most the data for that NBA season. It looks like it has all games until about 3/4/2015. Covering 896 games.
+
 Useful for evaluating who the best shooter is, who the best defender is, the hot-hand hypothesis, etc.
 
 Scraped from NBA's REST API.
@@ -36,6 +38,11 @@ Scraped from NBA's REST API.
     \item{\code{PTS}}{Points from the shot (redundant)}
     \item{\code{player_name}}{a character vector gives the shooting players name}
     \item{\code{player_id}}{a numeric vector of each players unique identifier}
+    \item{\code{Home.Team}}{a categorical variable giving the home team for that game}
+    \item{\code{Away.Team}}{a categorical variable giving the away team for that game}
+    \item{\code{Team.Shooting}}{a categorical variable giving the team which took the shot.}
+    \item{\code{Date.Of.Game}}{a date giving the date the game was player on}
+    \item{\code{Team.Defending}}{a categorical variable giving the team playing defense for that shot}
   }
 }
 \details{
