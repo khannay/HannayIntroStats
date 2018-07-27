@@ -4,21 +4,19 @@
 \alias{diagRegressionPlots}
 \title{Regression Diagnostics}
 \usage{
-diagRegressionPlots(regression.obj, x, y)
+diagRegressionPlots(regression.obj, cex = 1)
 }
 \arguments{
 \item{regression.obj}{no default, is a the output from an lm command in R}
 
-\item{x, }{no default gives the x values used in the regression used to make a data plot}
-
-\item{y, }{no default gives the y values used in the regression used to make a data plot}
+\item{cex}{defaults to 1, controls the size of the points in the scatter plots decrease if you have a large number of points}
 }
 \description{
-Makes a few plots which may be useful in determining whether linear regression is working for a data set.
+Makes a few plots which may be useful in determining whether ordinary linear regression is working for a data set.
 }
 \examples{
-data("AmesHousing_Regression")
-lm.res<-lm(SalePrice.log10~Square.Feet.log10, data=AmesHousing_Regression)
-summary(lm.res)
-diagRegressionPlots(lm.res)
+data("alligator")
+lm.alligator=lm(lnLength~lnWeight, data=alligator)
+summary(lm.alligator)
+diagRegressionPlots(lm.alligator)
 }

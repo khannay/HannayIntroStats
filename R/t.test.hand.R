@@ -1,6 +1,6 @@
-#' Function to form confidence intervals and perform t tests for data where we only have summary statistics
+#' T test calculator using summary statistics
 #'
-#' This function will perform inference for data sets where we only have the mean, sd and counts.
+#' Function to form confidence intervals and perform t tests for data where we only have summary statistics. This function will perform inference for data sets where we only have the mean, sd and counts.
 #'
 #' @param m1 the mean of data set one (numeric value)
 #' @param s1 the standard deviation of data set one (numeric value)
