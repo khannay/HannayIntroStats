@@ -26,7 +26,7 @@
 #' @examples
 #' t.test.hand(m1=10.0, s1=2.0, n1=100) #forn a 95% confidence interval
 #' t.test.hand(m1=10.0, s1=2.0, n1=30, m2=9.0, s2=1.0, n2=40) #perform a two sided two sample t test
-#' @export
+#' @export t.test.hand
 
 
 t.test.hand <- function(m1,s1,n1, m2=NULL,s2=NULL,n2=NULL,mu=0, conf.level=0.95, var.equal=FALSE,  alternative=c("two.sided", "less", "greater"))
