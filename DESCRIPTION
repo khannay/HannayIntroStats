@@ -8,6 +8,6 @@ License: BSD
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
-Imports: maps, cluster, assertthat, fivethirtyeight, shiny
-Suggests: dplyr
+Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr
+Suggests: ggplot2
 VignetteBuilder: knitr
