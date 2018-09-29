@@ -4,8 +4,8 @@
 \alias{makeSimpleResidualPlot}
 \title{Function to plot the residuals for a given simple OLS Problem}
 \usage{
-makeSimpleResidualPlot(alpha = 0, beta = 1, x, y, main = "", xlab = "x",
-  ylab = "y")
+makeSimpleResidualPlot(alpha = 0, beta = 1, x, y, main = "",
+  xlab = "x", ylab = "y")
 }
 \arguments{
 \item{alpha}{defaults to 0, y intercept of the linear model}

@@ -7,7 +7,7 @@ Depends: R (>= 3.1)
 License: BSD
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0
 Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr
 Suggests: ggplot2
 VignetteBuilder: knitr
