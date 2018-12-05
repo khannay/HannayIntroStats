@@ -31,7 +31,7 @@ diagRegressionPlots <- function(regression.obj, cex=1)
 
   #plot the regression
   title=paste(c('Model Fit R^2=', round(summary(regression.obj)$r.squared,2)), collapse=" ")
-  plot(x,y, main=title, xlab=var.names[1], ylab=var.names[2], cex=cex)
+  plot(x,y, main=title, xlab=var.names[2], ylab=var.names[1], cex=cex)
   abline(regression.obj, col='red')
   par(mfrow=c(1,1))
 }

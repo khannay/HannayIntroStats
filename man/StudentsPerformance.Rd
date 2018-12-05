@@ -5,7 +5,7 @@
 Students Performance in Exams
 }
 \description{
-his data set consists of the marks secured by the students in various subjects.
+This data set consists of the marks secured by the students in various subjects.
 }
 \usage{data("StudentsPerformance")}
 \format{
@@ -14,7 +14,7 @@ his data set consists of the marks secured by the students in various subjects.
     \item{\code{gender}}{a factor with levels \code{female} \code{male}}
     \item{\code{lunch}}{a factor with levels \code{free/reduced} \code{standard}}
     \item{\code{race}}{a factor with levels \code{group A} \code{group B} \code{group C} \code{group D} \code{group E}}
-    \item{\code{Parents.Education}}{a factor with levels \code{associate's degree} \code{bachelor's degree} \code{high school} \code{master's degree} \code{some college} \code{some high school}}
+    \item{\code{Parents.Education}}{a factor with levels \code{associates degree} \code{bachelors degree} \code{high school} \code{masters degree} \code{some college} \code{some high school}}
     \item{\code{Test.Prep.Course}}{a factor with levels \code{completed} \code{none}}
     \item{\code{Math.Score}}{a numeric vector}
     \item{\code{Reading.Score}}{a numeric vector}
@@ -22,10 +22,10 @@ his data set consists of the marks secured by the students in various subjects.
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+Not a real data set, but can be used for a project if you want
 }
 \source{
-http://roycekimmons.com/tools/generated_data/exams
+\url{http://roycekimmons.com/tools/generated_data/exams}
 }
 \references{
 %%  ~~ possibly secondary sources and usages ~~
