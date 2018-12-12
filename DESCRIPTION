@@ -1,6 +1,6 @@
 Package: HannayIntroStats
 Title: Introductory Statistics Package for MATH 2330 at Schreiner University
-Version: 1.0
+Version: 1.1
 Authors@R: person("Kevin", "Hannay", email = "khannay@schreiner.edu", role = c("aut", "cre"))
 Description: Provides data sets and shortcut R functions used in MATH 2330 at Schreiner University. 
 Depends: R (>= 3.1)
@@ -8,6 +8,6 @@ License: BSD
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr
+Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr, tidyverse
 Suggests: ggplot2
 VignetteBuilder: knitr

@@ -17,7 +17,7 @@ Input data frame
 }
 }
 \details{
-names(df)<-stringr::str_replace_all(names(df), c(" " = "." , "," = ".", "/"="."))
+names(df)<-stringr::str_replace_all(names(df), c(" " = "_" , "," = "_", "/"="_", "\\("="", "\\)"=""))
 }
 \value{
 dataframe with the column names fixed
