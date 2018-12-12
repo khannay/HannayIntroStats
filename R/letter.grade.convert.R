@@ -4,10 +4,10 @@
 
 letter.grade.convert<-function(num_grades) {
 
-  ifelse(num_grades >=90, "A",
-         ifelse(num_grades >=80, "B",
-                ifelse(num_grades >=70, "C",
-                       ifelse(num_grades>=60, "D", "F"))))
+  ifelse(num_grades >=89.50, "A",
+         ifelse(num_grades >=79.5, "B",
+                ifelse(num_grades >=69.5, "C",
+                       ifelse(num_grades>=59.5, "D", "F"))))
 
 
 }
