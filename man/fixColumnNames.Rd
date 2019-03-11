@@ -2,25 +2,26 @@
 \alias{fixColumnNames}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-fixColumnNames
+Remove Annoyances from the Column Names of a Data Frame
 }
 \description{
-This is a simple function to remove spaces and other annoyances from column names in a data frame
+This function will remove spaces, backslashes and other annoyances from the column names of a data frame
+and return a new data frame with those names updated. Also works on tidyverse tibbles.
 }
 \usage{
-fixColumnNames(x)
+fixColumnNames(df)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-Input data frame
+  Data Frame (or tibble)
 }
 }
 \details{
-names(df)<-stringr::str_replace_all(names(df), c(" " = "_" , "," = "_", "/"="_", "\\("="", "\\)"=""))
+%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-dataframe with the column names fixed
+same data frame with the colums names updated.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -39,5 +40,7 @@ Kevin Hannay
 }
 \examples{
 }
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
 \keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
