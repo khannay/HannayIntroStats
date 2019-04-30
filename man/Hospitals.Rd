@@ -29,6 +29,7 @@ This data set contains ratings for over two thousand hospitals across the countr
     \item{\code{Effectiveness.of.care.national.comparison}}{a factor with levels \code{Above the national average} \code{Below the national average} \code{Not Available} \code{Same as the national average}}
     \item{\code{Timeliness.of.care.national.comparison}}{a factor with levels \code{Above the national average} \code{Below the national average} \code{Not Available} \code{Same as the national average}}
     \item{\code{Efficient.use.of.medical.imaging.national.comparison}}{a factor with levels \code{Above the national average} \code{Below the national average} \code{Not Available} \code{Same as the national average}}
+    \item{\code{Ownership.Simple}}{a factor giving the type of ownership in simple terms}
   }
 }
 \details{
