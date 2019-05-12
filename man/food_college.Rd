@@ -80,7 +80,9 @@ The survey questions are given towards the bottom of this documentation.
 }
 \details{
 1) GPA – numerical, actual GPA
-2) Gender (1 – Female and 2 – Male)
+
+2) Gender categorical with two levels Female and Male
+
 3) Breakfast (the participants are shown the following pictures and asked which one of these pictures they associate with the word “breakfast), 1 – cereal option and 2 – donut option
 
 4) calories_chicken - guessing calories in chicken piadina:
