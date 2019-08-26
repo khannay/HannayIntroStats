@@ -8,6 +8,6 @@ License: BSD
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr, tidyverse, corrplot, reshape2
+Imports: maps, cluster, assertthat, fivethirtyeight, shiny, dplyr, knitr, tidyverse, corrplot, reshape2, deSolve
 Suggests: ggplot2
 VignetteBuilder: knitr
