@@ -1,0 +1,401 @@
+<style>
+.reveal .slides{
+    width: 90% !important;  /* or other width */
+}
+</style>
+<style>
+.small-code pre code {
+  font-size: 1em;
+}
+</style>
+<style>
+.reveal h3 {
+  color: #228B22;
+  text-decoration: underline;
+}
+</style>
+<style>
+body {
+    overflow: scroll;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+Data Wrangling
+========================================================
+author: Kevin Hannay
+date: 9/12/2019
+autosize: true
+
+What is Data Wrangling?
+========================================================
+Usually data sets require some work to extract the answers we are looking for. This is especially true for modern data sets which can be extremely large. These techniques are called **data wrangling**.
+
+This could include formatting, filtering, merging and trimming data files. 
+
+- In my experience the majority of your time in data science is spent on data wrangling
+- We will use the library **dplyr** for wrangling data
+
+
+```{r}
+library(HannayIntroStats)
+library(dplyr)
+```
+
+Missing Data
+========================================================
+class: small-code
+Real world data sets will usually contain some **missing values** these data points could been missing for any number of reasons. We need some way of dealing with missing values.
+
+```{r}
+data("animal_sleep")
+head(animal_sleep,5)
+```
+
+
+
+Missing Data
+================================================================
+`R` represents missing values using the `NA` symbol. This data set has 83 species (rows) total and most of these rows have a missing value.
+
+```{r}
+dim(animal_sleep)
+```
+
+Dealing with Missing Data (Wrong Way)
+========================================================
+class: small-code
+To deal with missing data we can remove the data points which contain missing values. The command in R to do this is **`na.omit`**.
+
+Running this on the animal sleep data set we can see that **all rows which have ANY missing values are removed.**
+```{r}
+cleaned_animal=na.omit(animal_sleep)
+head(cleaned_animal)
+```
+
+Dealing with Missing Data (Wrong Way)
+==========================================================
+This leaves only the species which have all data for all eleven columns. 
+
+```{r}
+dim(cleaned_animal)
+```
+We have thrown away the vast majority of our data. This is the wrong way to deal with missing values. 
+
+
+
+
+Select Command
+========================================================
+class: small-code
+The select command is our first **dplyr** keyword. It allows us to select a subset of columns from a data set. 
+
+For example, suppose that I would like to look at only the brainwt and sleep_total columns from the animal sleep data set.
+
+```{r}
+trimmed_animal=select(animal_sleep, brainwt, sleep_total)
+head(trimmed_animal)
+```
+
+Select Command
+=============================================================
+Suppose I want to look at the relationship between brain size and total sleep. Since both of these are continuous variables we should make a scatter plot.
+
+```{r}
+plot(animal_sleep$brainwt, animal_sleep$sleep_total, xlabel="Brain weight", ylabel="sleep total (hrs)")
+```
+
+Missing Data and Select Command
+=======================================================
+<ul>
+<li> The best strategy for dealing with missing data is to select the columns you need to answer your
+question and <b> then </b> drop any missing values. </li>
+</ul>
+```{r eval=FALSE}
+q=select(animal_sleep, brainwt, sleep_total)
+q2=na.omit(q)
+```
+
+
+
+
+
+
+Chains 
+======================================================
+Data wrangling can involve a huge number of individual steps in many cases.
+
+This can lead to us having to save many intermediate steps in R, this can be quite confusing and makes
+mistakes hard to find. 
+
+To remedy this dplyr uses the **chaining operation %>%**. This weird symbol tells R to swallow the output from the last command and feed this directly into what comes next. 
+
+```{r eval=FALSE}
+animal_sleep %>% select(brainwt, sleep_total) %>% na.omit()
+```
+
+The output from this command has no **NA** values at all. 
+
+Chains Continued
+=======================================================
+The chain approach allows us to build up our data wrangling scheme in small steps as well. 
+
+%>% may be inserted in RStudio using **Ctrl+Shift+M** in RStudio
+
+
+
+Exercises
+========================================================
+- Create a new dataframe from the nflplays dataframe which has only the PlayType, Yards.Gained, posteam columns using the **select** command.
+- From the nflplays data frame use the select command to grab all columns from posteam to Fumble. How many columns are left in your reduced data frame?
+- Run the na.omit on animal_sleep and THEN select the name and brainwt columns. How many rows are left in this data set? Does the order of the commands matter? 
+
+
+Filtering Rows
+=============================================================
+The filter command allows us to **pick out rows that we want to examine further**
+
+We have seen this sort of thing before with the subset command. Filter is a more powerful command then subset and we will use it when we need to call in the big guns. 
+
+
+Filtering Rows
+====================================================================
+class: small-code
+Here we get only those species who sleep for more than 12 hours. 
+```{r}
+animal_sleep %>% filter(sleep_total> 12.0) %>% select(name, sleep_total)
+```
+
+Filtering Rows
+====================================================================
+Here we get only those species who sleep for more than 12 hours and are carnivores
+```{r}
+animal_sleep %>% filter(sleep_total> 12.0, vore=='carni') %>% select(name, vore, sleep_total)
+```
+
+Filtering Rows
+====================================================================
+We can use an **AND** condition just by adding a second condition with a comma. We could add even more conditions if we wanted to.....
+```{r eval=TRUE}
+animal_sleep %>% filter(sleep_total> 12.0, vore=='carni', sleep_rem>5.0) %>% select(name, vore, sleep_total)
+```
+
+
+Filtering Rows
+====================================================================
+class: small-code
+To apply an **OR** condition we just use a vertical bar. 
+```{r eval=TRUE}
+animal_sleep %>% filter(sleep_total> 12.0 | vore=='carni') %>% select(name, vore, sleep_total)
+```
+
+
+
+Filtering Exercises
+=============================================================
+```{r eval=FALSE}
+data(nflplays)
+```
+
+- How many pass plays resulted in a fumble in the data set? How does this compare to the number of Run plays that resulted in a fumble? Use the filter command and the fumble column and the PlayType column.
+
+- How many pass plays resulted in a fumble OR an interception?
+
+- How many pass plays did the New York Giants (NYG) run on third down? 
+
+
+Grouping Data: group_by
+================================================================
+Our nfl plays data set is based around recording data for each individual play. However, we might be more interested in grouping things by the player, team, league, play-type, etc.
+
+For this **grouping** operation using a _categorical variable_ we can use the group_by command in conjunction with the summarize command. 
+
+```{r}
+nflplays %>% group_by(posteam) %>% summarize(av.yds.gained=mean(Yards.Gained))
+```
+
+Grouping Data: group_by
+================================================================
+```{r eval=FALSE}
+nflplays %>% group_by(posteam) %>% summarize(av.yds.gained=mean(Yards.Gained))
+```
+Let’s unpack what this command does. 
+- It groups the plays by the posteam column. The group_by command is not terribly useful by itself, you will just about always want to use it in combination with the summarize command. 
+- The summarize command is used to create a summary of the data after it has been grouped in some way. It will create new summary columns in a new data frame. In this case we compute the mean of the Yards.Gained column.
+
+Grouping Examples
+=================================================
+- Can group using more than one variable
+```{r}
+nflplays %>% group_by(posteam, Season) %>% summarize(av.yards.gained=mean(Yards.Gained))
+```
+Grouping Examples
+=================================================
+- Calculate more than one thing in our summary
+```{r}
+nflplays %>% group_by(posteam, Season) %>% 
+  summarize(av.yards.gained=mean(Yards.Gained), median.yds.gained=median(Yards.Gained), sd.yds.gained=sd(Yards.Gained))
+```
+
+Summarise + Group By
+=====================================================
+When we summarize our groups we can can use the following options:
+
+- mean(columnName), sd(columnName), median(columnName), etc 
+- Really any **summary stat function** will work
+- min()/max() give the largest and smallest entries
+- n_distinct(columnName) gives the number of distinct entries in that group
+- n() this just gives the number of rows in a group
+- sum(columnName) gives the sum of that column for the group
+
+
+Summarise + Group By
+=====================================================
+Practice grouping and summarising data:
+```{r}
+data(wine_tasting)
+```
+
+- Load the wine_tasting data set, and find the mean, median, and number of wines in the data set for each country.
+- Now filter the data to show only countries who produced more than 100 wines
+- Compute the standard deviation of the price for each group, do you run into problems?
+
+
+Arrange Command
+==================================================
+From the dplyr library another useful command is the **arrange** command. This allows us to **sort our data using one of more columns**
+
+```{r}
+wine_tasting %>% group_by(country) %>% summarise(num.wines=n()) %>% arrange(num.wines) 
+```
+
+Arrange Command
+==================================================
+By default the arrange command will go in ascending order. However, we can switch this using **desc()**
+
+```{r}
+wine_tasting %>% group_by(country) %>% summarise(num.wines=n()) %>% arrange(desc(num.wines))
+```
+
+
+More on Sorting
+=====================================================
+class: small-code
+We can sort using more than one column in the arrange command. The command will sort using the first column and then ties will be broken by the second, third, etc columns
+
+```{r}
+data("Distel_Turtle_Data")
+Distel_Turtle_Data %>% select(Pond, Mass) %>% arrange(Pond, desc(Mass)) %>% head(10)
+```
+The last command in the chain **head** tells `R` to show only the first ten entries (**tail**(10) would show the last 10)
+
+
+Review of Data Wrangling
+=======================================================
+- What are the dplyr keywords and what are they used for?
+- How do I select rows using an AND condition?
+- How do I select rows using an OR condition?
+- How do I group rows together? 
+
+<a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf"> dplyr cheatsheet </a>
+
+Practice on Data Wrangling
+======================================================
+Using the nflplays data set from the notes:
+
+```{r}
+data(nflplays)
+```
+
+- Find the average yards gained for **run** plays grouped by the team. You will need to add a filter command to the chain.
+
+- Find average yards gained for **pass** plays grouped by the Passer. Eliminate those Passers who threw less than 300 passes and find the top ten passers.  
+
+
+Practice on Data Wrangling (Ans 1)
+======================================================
+Using the nflplays data set from the notes:
+
+```{r}
+data(nflplays)
+```
+
+- Find the average yards gained for **run** plays grouped by the team. You will need to add a filter command to the chain.
+```{r eval=FALSE}
+nflplays %>% filter(PlayType=='Run') %>% group_by(posteam) %>% summarise(av.yds=mean(Yards.Gained))
+```
+
+- Find average yards gained for **pass** plays grouped by the Passer. Eliminate those Passers who threw less than 300 passes and find the top ten passers.  
+
+
+
+Practice on Data Wrangling (Ans 2)
+======================================================
+Using the nflplays data set from the notes:
+
+```{r}
+data(nflplays)
+```
+
+- Find the average yards gained for **run** plays grouped by the team. You will need to add a filter command to the chain.
+```{r eval=FALSE}
+nflplays %>% filter(PlayType=='Run') %>% group_by(posteam) %>% summarise(av.yds=mean(Yards.Gained))
+```
+
+- Find average yards gained for **pass** plays grouped by the Passer. Eliminate those Passers who threw less than 300 passes and find the top ten passers.  
+
+```{r eval=FALSE}
+nflplays %>% filter(PlayType=='Pass') %>% 
+    group_by(Passer) %>% 
+    summarise(av.yds=mean(Yards.Gained), num.passes=n()) %>% 
+    filter(num.passes >= 300) %>% arrange(desc(av.yds))
+```
+
+
+Data Wrangling Challenge
+=================================================================
+
+- Using the shot_logs data set find the average closest defender distance for each team defending in the NBA that season. Use the Team.Defending and CLOSE_DEF_DIST columns
+
+- Now find the proportion of made shots for each defensive team as well. 
+
+- Plot the average defender distance against the shooting percentage to look for a relationship between the two columns. 
+
+More Useful Dplyr Commands
+================================================================
+
+- **mutate(new.col=10*old.col)**: This can be used to create a new column in a data frame
+- **rename(new.col=old.col)**
+- **case_when** recode a <b> categorical variable </b>
+   
+```{r eval=FALSE}
+ data %>% mutate(sex_n = case_when(sex == 0 ~ “m”, sex == 1 ~ “f”))
+```
+
+- Many more things to learn about data wrangling, these notes are just an introduction
+
+
+<a href="https://r4ds.had.co.nz/"> More information on data wrangling </a>
+
+
+
+
+EDA Project: Using RMarkdown
+=======================================================
+![](index.png)
+***
+- Use document editor inside of RStudio to write your project
+- Called RMarkdown
+- Will turn in your **.Rmd file** so I can evaluate and fix your project. 
+- Easy to get started. 
+
+
+
+
+
+
+
+
