@@ -2,6 +2,8 @@
 
 addClassesEnrollment <- function(CSVFile, semesterCode='Fall', yearData=2019) {
   spring2019_enrollment <- readr::read_csv(CSVFile)
+  spring2019_enrollment$Add=NULL
+  spring2019_enrollment$Textbooks=NULL
   spring2019_enrollment$Faculty=as.factor(spring2019_enrollment$Faculty)
   spring2019_enrollment$Status=as.factor(spring2019_enrollment$Status)
 
@@ -22,6 +24,7 @@ addClassesEnrollment <- function(CSVFile, semesterCode='Fall', yearData=2019) {
   sp2$Is.Intern <- grepl("Intern", sp2$Name)
   sp2$Faculty.Load=ifelse(sp2$Is.Lab, sp2$Credits*1.34, sp2$Credits)
   sp2$True.Load=ifelse(sp2$Students<6, sp2$Faculty.Load*sp2$Students/6.0, sp2$Faculty.Load);
+  sp2 <- sp2 %>% select(colnames(Enrollment))
   return(sp2)
 }
 
