@@ -1,9 +1,9 @@
 Package: HannayIntroStats
 Title: Teaching Introductory Statistics Package
 Version: 1.2
-Authors@R: person("Kevin", "Hannay", email = "khannay@schreiner.edu", role = c("aut", "cre"))
+Authors@R: person("Kevin", "Hannay", email = "khannay24@gmail.com", role = c("aut", "cre"))
 Description: Provides data sets and shortcut R functions for use alongside the introductory statistics notes written by Kevin Hannay and Robert Bassett 
-Depends: R (>= 3.1)
+Depends: R (>= 3.5)
 License: BSD
 Encoding: UTF-8
 LazyData: true
