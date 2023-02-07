@@ -4,9 +4,18 @@
 \alias{t.test.hand}
 \title{T test calculator using summary statistics}
 \usage{
-\method{t}{test.hand}(m1, s1, n1, m2 = NULL, s2 = NULL, n2 = NULL,
-  mu = 0, conf.level = 0.95, var.equal = FALSE,
-  alternative = c("two.sided", "less", "greater"))
+\method{t}{test.hand}(
+  m1,
+  s1,
+  n1,
+  m2 = NULL,
+  s2 = NULL,
+  n2 = NULL,
+  mu = 0,
+  conf.level = 0.95,
+  var.equal = FALSE,
+  alternative = c("two.sided", "less", "greater")
+)
 }
 \arguments{
 \item{m1}{the mean of data set one (numeric value)}

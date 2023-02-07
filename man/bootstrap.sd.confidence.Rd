@@ -4,8 +4,13 @@
 \alias{bootstrap.sd.confidence}
 \title{Function to find a confidence interval for the standard deviation of a data set}
 \usage{
-bootstrap.sd.confidence(mydata, conf.level = 0.95, replicates = 10000,
-  alternative = "two.sided", na.rm = TRUE)
+bootstrap.sd.confidence(
+  mydata,
+  conf.level = 0.95,
+  replicates = 10000,
+  alternative = "two.sided",
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{mydata}{use this to pass in the data set (numeric vector) you wish to build the confidence interval for.}
