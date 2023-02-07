@@ -10,9 +10,6 @@
 #' data("Bensonetal")
 #' b2<-grabNumeric(Bensonetal) # removes non numerical columns
 #' @export
-
-
-
 grabNumeric <- function(mydf, drop=NULL, drop.na.values=TRUE) {
     mydf<-mydf[ , !(names(mydf) %in% drop)]
     nums<-sapply(mydf, is.numeric)
