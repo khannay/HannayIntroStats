@@ -4,8 +4,15 @@
 \alias{makeSimpleResidualPlot}
 \title{Function to plot the residuals for a given simple OLS Problem}
 \usage{
-makeSimpleResidualPlot(alpha = 0, beta = 1, x, y, main = "",
-  xlab = "x", ylab = "y")
+makeSimpleResidualPlot(
+  alpha = 0,
+  beta = 1,
+  x,
+  y,
+  main = "",
+  xlab = "x",
+  ylab = "y"
+)
 }
 \arguments{
 \item{alpha}{defaults to 0, y intercept of the linear model}
@@ -15,8 +22,6 @@ makeSimpleResidualPlot(alpha = 0, beta = 1, x, y, main = "",
 \item{x}{no default, this is a vector of the x values for the data points}
 
 \item{main, }{no default, the title of the graph}
-
-\item{xlab, }{default to x , the x axis label of the graph}
 
 \item{xlab, }{default to y , the y axis label of the graph}
 }

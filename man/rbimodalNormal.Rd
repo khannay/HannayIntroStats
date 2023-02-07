@@ -4,8 +4,7 @@
 \alias{rbimodalNormal}
 \title{Generated Random Numbers From Bimodal Normal Distribution}
 \usage{
-rbimodalNormal(n, mu1 = 1, mu2 = -1, sigma1 = 0.5, sigma2 = 0.5,
-  p1 = 0.5)
+rbimodalNormal(n, mu1 = 1, mu2 = -1, sigma1 = 0.5, sigma2 = 0.5, p1 = 0.5)
 }
 \arguments{
 \item{n}{no default is the number of random variates requested}

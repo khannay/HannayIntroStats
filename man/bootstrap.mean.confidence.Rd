@@ -4,8 +4,13 @@
 \alias{bootstrap.mean.confidence}
 \title{Function to find a confidence interval for the mean of a data set}
 \usage{
-bootstrap.mean.confidence(mydata, conf.level = 0.95,
-  replicates = 10000, alternative = "two.sided", na.rm = TRUE)
+bootstrap.mean.confidence(
+  mydata,
+  conf.level = 0.95,
+  replicates = 10000,
+  alternative = "two.sided",
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{mydata}{use this to pass in the data set (numeric vector) you wish to build the confidence interval for.}
