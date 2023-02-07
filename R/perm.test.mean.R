@@ -12,9 +12,6 @@
 #' bootstrap.median.confidence(hkhw$Weight.lbs) #form the 95% confidence interval for the median weight of Hong Kong Children
 #' @export
 
-
-
-
 perm.test.mean <- function(x,y, resamples=10000) {
 
   n1=length(x)
